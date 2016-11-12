@@ -432,7 +432,7 @@ impl HTMLScriptElement {
         // Step 20.e: doesn't have src, was parser-inserted, is blocked on stylesheet.
         } else if !is_external &&
                   was_parser_inserted &&
-                  // TODO: check for script nesting levels.
+                  doc.get_current_parser().unwrap().script_nesting_level() <= 1 &&
                   doc.get_script_blocking_stylesheets_count() > 0 {
             doc.set_pending_parsing_blocking_script(Some(self));
             *self.load.borrow_mut() = Some(Ok(ScriptOrigin::internal(text, base_url)));
